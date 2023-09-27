@@ -1,200 +1,110 @@
 <?php
-
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use Doctrine\ORM\Mapping\Entity;
+use phpDocumentor\Reflection\Types\Boolean;
 
 
-class Movie
-{
-    private int $id;
-    private string $title;
-    private string $image;
-    private string $video;
-    private string $synopsis;
-    private string $Language;
-    private bool $isAdult;
-    private \DateTime $date;
-    private int $note;
-    private string $director;
-    private Collection $theme;
+class Movie {
+    private ?int $id;
+    private ?string $title;
+    private ?string $image;
+    private ?string $video;
+    private ?string $language;
+    private ?boolean $isAdult;
+    private ?DateTime $realeaseDate;
 
-    public function __construct(int $id, string $title, string $image, string $video, string $synopsis, string $Language, bool $isAdult, \DateTime $date, int $note, string $director, \Doctrine\Common\Collections\Collection $theme)
+    /**
+     * @param int|null $id
+     * @param string|null $title
+     * @param string|null $image
+     * @param string|null $video
+     * @param string|null $language
+     * @param bool|null $isAdult
+     * @param DateTime|null $realeaseDate
+     */
+    public function __construct(?int $id, ?string $title, ?string $image, ?string $video, ?string $language, ?bool $isAdult, ?DateTime $realeaseDate)
     {
         $this->id = $id;
         $this->title = $title;
         $this->image = $image;
         $this->video = $video;
-        $this->synopsis = $synopsis;
-        $this->Language = $Language;
+        $this->language = $language;
         $this->isAdult = $isAdult;
-        $this->date = $date;
-        $this->note = $note;
-        $this->director = $director;
-        $this->theme = $theme;
+        $this->realeaseDate = $realeaseDate;
     }
 
-
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return String
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return String
-     */
-    public function getImage(): string
-    {
-        return $this->image;
-    }
-
-
-    /**
-     * @return String
-     */
-    public function getVideo(): string
-    {
-        return $this->video;
-    }
-
-
-    /**
-     * @return String
-     */
-    public function getSynopsis(): string
-    {
-        return $this->synopsis;
-    }
-
-    /**
-     * @return String
-     */
-    public function getLanguage(): string
-    {
-        return $this->Language;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAdult(): bool
-    {
-        return $this->isAdult;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate(): \DateTime
-    {
-        return $this->date;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNote(): int
-    {
-        return $this->note;
-    }
-
-    /**
-     * @return String
-     */
-    public function getDirector(): string
-    {
-        return $this->director;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @param String $title
-     */
-    public function setTitle(string $title): void
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @param String $image
-     */
-    public function setImage(string $image): void
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @param String $video
-     */
-    public function setVideo(string $video): void
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): void
     {
         $this->video = $video;
     }
 
-    /**
-     * @param String $synopsis
-     */
-    public function setSynopsis(string $synopsis): void
+    public function getLanguage(): ?string
     {
-        $this->synopsis = $synopsis;
+        return $this->language;
     }
 
-    /**
-     * @param String $Language
-     */
-    public function setLanguage(string $Language): void
+    public function setLanguage(?string $language): void
     {
-        $this->Language = $Language;
+        $this->language = $language;
     }
 
-    /**
-     * @param bool $isAdult
-     */
-    public function setIsAdult(bool $isAdult): void
+    public function getIsAdult(): ?bool
+    {
+        return $this->isAdult;
+    }
+
+    public function setIsAdult(?bool $isAdult): void
     {
         $this->isAdult = $isAdult;
     }
 
-    /**
-     * @param \DateTime $date
-     */
-    public function setDate(\DateTime $date): void
+    public function getRealeaseDate(): ?DateTime
     {
-        $this->date = $date;
+        return $this->realeaseDate;
     }
 
-    /**
-     * @param int $note
-     */
-    public function setNote(int $note): void
+    public function setRealeaseDate(?DateTime $realeaseDate): void
     {
-        $this->note = $note;
+        $this->realeaseDate = $realeaseDate;
     }
 
-    /**
-     * @param String $director
-     */
-    public function setDirector(string $director): void
-    {
-        $this->director = $director;
-    }
+
 
 }
