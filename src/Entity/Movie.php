@@ -159,6 +159,28 @@ class Movie {
     }
     private ?DateTime $realeaseDate;
 
+    public function addActor(Actor $actor): static
+    {
+        if($this->actors->contains($actor)){
+            $this->actors->add($actor);
+            $actor->setSerie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActor(Actor $actor): static
+    {
+        if($this->actor->removeElement($actor)){
+            if($actor->getSerie()===$this){
+                $actor->setSerie(null);
+            }
+
+        }
+        return $this;
+    }
+
+
     /**
      * @param int|null $id
      * @param string|null $title

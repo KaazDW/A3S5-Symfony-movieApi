@@ -1,9 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul>
+    <div class="text-slate-300 w-2/5 mx-auto">
         {% for movie in movies %}
-            <li>{{ movie.title }}</li>
+            <div class="bg-gray-800 flex p-5 m-3 rounded-2xl">
+                <img class="w-2/6 mr-8 object-cover rounded-2xl" src="{{ movie.image }}"/>
+                <div class="">
+                    <h3 class="text-2xl	font-mono">{{ movie.title }} </h3>
+                    <p class=""><span class="text-sm">{{ movie.id }} : </span>{{ movie.overview }}</p>
+                    <div class="bg-gray-900 text-sm p-2 mt-8 m-2 mx-auto rounded-xl text-center	">
+                        <p class="">VO :
+                            {% if movie.language == "en" %}
+                                English
+                            {% elseif movie.language == "fr" %}
+                                Français
+                            {% endif %}
+                        </p>
+                        <p class="">Age :
+                            {% if movie.isAdult == true %}
+                                Only for Adult
+                            {% elseif movie.isAdult == false %}
+                                Suitable for all audiences,
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+        <button id="scrollToTopButton" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none">
+            Retour en haut
+        </button>
+
+    </div>
+    <script>
+        const scrollToTopButton = document.getElementById('scrollToTopButton');
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
+        });
+    </script>
 {% endblock %}

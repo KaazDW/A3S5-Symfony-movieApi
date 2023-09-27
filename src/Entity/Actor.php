@@ -21,13 +21,9 @@ class Actor {
      * @param string|null $gender
      * @param string|null $biography
      */
-    public function __construct(?int $id, ?string $firstname, ?string $lastname, ?string $gender, ?string $biography)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->gender = $gender;
-        $this->biography = $biography;
+
     }
 
     public function getId(): ?int

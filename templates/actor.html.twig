@@ -1,0 +1,47 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block body %}#}
+{#    {% for actor in actors %}#}
+{#        <ul>#}
+{#            <li>{{ actor.id }}</li>#}
+{#            <li>{{ actor.lastname }}</li>#}
+{#            <li>{{ actor.gender }}</li>#}
+{#        </ul>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="text-slate-300 w-2/5 mx-auto">
+        {% for actor in actors %}
+            <div class="bg-gray-800 flex p-5 m-3 rounded-2xl">
+                <div class="">
+                    <h3 class="text-2xl	font-mono">{{ actor.lastname }} </h3>
+                    <p class=""><span class="text-sm">{{ actor.id }} : {{ actor.gender }} </span></p>
+                </div>
+            </div>
+        {% endfor %}
+        <button id="scrollToTopButton" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none">
+            Retour en haut
+        </button>
+
+    </div>
+    <script>
+        const scrollToTopButton = document.getElementById('scrollToTopButton');
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
+        });
+    </script>
+{% endblock %}

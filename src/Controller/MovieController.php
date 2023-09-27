@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\Actor;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -58,12 +59,38 @@ class MovieController extends AbstractController
                 ->setOverview($result['overview'])
                 ->setLanguage($result['original_language'])
                 ->setIsAdult($result['adult'])
-                ->setImage('https://image.tmbd.org/t/p/original' . $result['poster_path'])
+                ->setImage('https://image.tmdb.org/t/p/original' . $result['poster_path'])
                 ->setReleaseDate(new \DateTime($result['release_date']));
             $movies[] = $movie;
         }
         return $this->render('movies.html.twig', [
             'movies' => $movies
         ]);
+    }
+
+    #[Route('/{id}')]
+    public function getMoviesById(int $id): Response
+    {
+        $response = $this->tmbdClient->request(
+            'GET',
+            '/3/movie/'.$id.'/credits?language=en-FR'
+        );
+        $apiMovies = $response->toArray()['cast'];
+        $actors = [];
+
+        foreach ($apiMovies as $apiMovie) {
+            $actor = new Actor();
+            $actor->setId($apiMovie['id']);
+            $actor->setLastname($apiMovie['original_name']);
+            $actor->setGender($apiMovie['gender']);
+            $actor->setBiography($apiMovie['known_for_department']);
+
+            $actors[] = $actor;
+        }
+        return $this->render('actor.html.twig',[
+            'actors'=>$actors
+        ]);
+
+        //return new Response($response->getContent());
     }
 }
