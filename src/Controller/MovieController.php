@@ -2,33 +2,68 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/movie')]
 class MovieController extends AbstractController
 {
-    private $httpClient;
+    public function __construct(
+        private readonly HttpClientInterface $tmbdClient
+    ){
 
-    public function __construct(HttpClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-        $this->apiKey = "";
     }
-
     #[Route('/all')]
     public function getMovies(): Response
     {
-        $headers = [
-            'Authorization' => 'Bearer ' . $this->apiKey,
-        ];
-        $response = $this->httpClient->request('GET', 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1');
-        $data = $response->toArray();
+        $response = $this->tmbdClient->request(
+            'GET',
+            '/3/movie/popular'
+        );
+        return new Response($response->getContent());
+    }
 
-        return $this->render('movie/index.html.twig', [
-            'movies' => $data,
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws \Exception
+     */
+    #[Route('/popular')]
+    public function getPopularMovies(): Response
+    {
+        $response = $this->tmbdClient->request(
+            'GET',
+            '/3/movie/popular?language=fr-FR&page=1'
+        );
+
+        $results = $response->toArray()['results'];
+        $movies = [];
+        foreach ($results as $result) {
+            $movie = new Movie();
+            $movie
+                ->setId($result['id'])
+                ->setTitle($result['title'])
+                ->setVideo($result['video'])
+                ->setOverview($result['overview'])
+                ->setLanguage($result['original_language'])
+                ->setIsAdult($result['adult'])
+                ->setImage('https://image.tmbd.org/t/p/original' . $result['poster_path'])
+                ->setReleaseDate(new \DateTime($result['release_date']));
+            $movies[] = $movie;
+        }
+        return $this->render('movies.html.twig', [
+            'movies' => $movies
         ]);
     }
 }
