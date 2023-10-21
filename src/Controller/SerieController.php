@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Avis;
+use App\Entity\Favorite;
 use App\Entity\Movie;
 use App\Entity\Actor;
-use App\Entity\Favorite;
 use App\Entity\Opinion;
+use App\Entity\Serie;
 use App\Form\AvisFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -19,10 +19,12 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[Route('/movie')]
-class MovieController extends AbstractController{
 
-    public function __construct( private  HttpClientInterface $tmbdClient){
+#[Route('/serie')]
+class SerieController extends AbstractController
+{
+    public function __construct(private HttpClientInterface $tmbdClient)
+    {
     }
 
     /**
@@ -32,43 +34,46 @@ class MovieController extends AbstractController{
      * @throws ClientExceptionInterface
      */
     #[Route('/all')]
-    public function getAllMovies(): Response
+    public function getAllSeries(): Response
     {
         $response = $this->tmbdClient->request(
             'GET',
-            '/3/movie/popular?language=fr-FR&page=1'
+            '/3/tv/popular'
         );
         return new Response($response->getContent());
     }
-    #[Route('/popular','popularFilm')]
-    public function getMovies(Request $request): Response
+
+    #[Route('/popular','popularSerie')]
+    public function getSeries(): Response
     {
-        $movies=[];//tableau des films
+        $series = [];
         $response = $this->tmbdClient->request(
             'GET',
-            '/3/movie/popular?language=fr-FR&page=1'
+            '/3/tv/popular'
         );
-
-        if ($request->query->has('q')) {
-            $query = $request->query->get('q');
-            $movies = $this->searchMovies($query);
-        } else {
-            $data = json_decode($response->getContent(), true);
-            if (isset($data['results']) && is_array($data['results'])) {
-                foreach ($data['results'] as $movieData) {
-                    $releaseDate = new \DateTime($movieData['release_date']);
-                    $picturePath = 'https://image.tmdb.org/t/p/original' . $movieData["poster_path"];
-                    $movie = new Movie($movieData["id"], $movieData["title"], $picturePath, $movieData["video"], $movieData["overview"], $movieData["original_language"], $movieData["adult"], $releaseDate, $movieData["vote_average"]);
-                    $actors = $this->getActors($movieData["id"]);
-                    foreach ($actors as $actor) {
-                        $movie->addActor($actor);
-                    }
-                    $movies[] = $movie;
-                }
+        $data = json_decode($response->getContent(), true);
+        if (isset($data['results']) && is_array($data['results'])) {
+            foreach ($data['results'] as $serieData) {
+                $releaseDate = new \DateTime($serieData["first_air_date"]);
+                $originCountry = isset($serieData["origin_country"][0]) ? $serieData["origin_country"][0] : null;
+                $serie = new Serie(
+                    $serieData["id"],
+                    $serieData["name"],
+                    "https://image.tmdb.org/t/p/original" . $serieData["poster_path"],
+                    $serieData["id"],
+                    $serieData["original_language"],
+                    $serieData["id"],
+                    $serieData["vote_count"],
+                    $originCountry,
+                    $releaseDate,
+                    $serieData["overview"],
+                    $serieData["adult"]
+                );
+                $series[] = $serie;
             }
         }
-        return $this->render('movie.html.twig', [
-            'movies' => $movies
+        return $this->render('serie.html.twig', [
+            'series' => $series
         ]);
     }
 
@@ -79,54 +84,59 @@ class MovieController extends AbstractController{
      * @throws ClientExceptionInterface
      * @throws \Exception
      */
-    #[Route('/{id}', name: 'movie_details')]
-    public function getCredits(int $id,EntityManagerInterface $entityManager) :Response
+    #[Route('/{id}', name: 'serie_details')]
+    public function getCredits(int $id , EntityManagerInterface $entityManager): Response
     {
         $actors=[];
         $opinions=[];
         $response = $this->tmbdClient->request(
             'GET',
-            '/3/movie/'.$id
+            '/3/tv/'.$id
         );
-        $movieData = json_decode($response->getContent(), true);
-        if (isset($movieData) && is_array($movieData)) {
-            $releaseDate = new \DateTime($movieData['release_date']);
-            $picturePath = 'https://image.tmdb.org/t/p/original' . ($movieData["poster_path"] ?? '');
-            $movie = new Movie(
-                (int)$movieData["id"],
-                $movieData["title"],
-                $picturePath,
-                $movieData["video"],
-                $movieData["overview"],
-                $movieData["original_language"],
-                $movieData["adult"],
-                $releaseDate,
-                $movieData["vote_average"]);
-            $actors = $this->getActors($movieData["id"]);
-            $opinions = $this->getAvis($movieData["id"]);
+        $serieData = json_decode($response->getContent(), true);
+        if (isset($serieData) && is_array($serieData)) {
+                $releaseDate = new \DateTime($serieData["first_air_date"]);
+                $originCountry = $serieData["origin_country"][0] ?? null;
+                $serie = new Serie(
+                    $serieData["id"],
+                    $serieData["name"],
+                    "https://image.tmdb.org/t/p/original" . $serieData["poster_path"],
+                    $serieData["number_of_seasons"],
+                    $serieData["original_language"],
+                    $serieData["number_of_episodes"],
+                    $serieData["vote_average"],
+                    $originCountry,
+                    $releaseDate,
+                    $serieData["overview"],
+                    $serieData["adult"]
+                );
+                $actors = $this->getActors($serieData["id"]);
+                $opinions = $this->getAvis($serieData["id"]);
 
-            foreach ($actors as $actor) {
-                $movie->addActor($actor);
-            }
+                foreach ($actors as $actor) {
+                    $serie->addActor($actor);
+                }
             $form = $this->createForm(AvisFormType::class);
             $avisRepository = $entityManager->getRepository(Avis::class);
-            $avis = $avisRepository->findBy(['idMovie' => $id]);
+            $avis = $avisRepository->findBy(['idSerie' => $id]);
+            $form->get('idSerie')->setData($id); // Pré-remplir le champ 'idSerie' avec l'ID de la série
         }
-        return $this->render('detailsMovie.html.twig', [
+        return $this->render('detailsSerie.html.twig', [
             'actors' => $actors,
-            'movie' => $movie,
+            'serie' => $serie,
             'opinions' => $opinions,
-            'movieId' => $id,
+            'serieId' => $id,
             'form' => $form->createView(),
             'avis' => $avis,
         ]);
     }
+
     public function getActors(int $id): array
     {
         $actors=[];
         $response = $this->tmbdClient->request(
             'GET',
-            '/3/movie/'.$id.'/credits'
+            '/3/tv/'.$id.'/credits'
         );
         $data = json_decode($response->getContent(), true);
         if (isset($data['cast']) && is_array($data['cast'])) {
@@ -136,21 +146,18 @@ class MovieController extends AbstractController{
                     $actorData["gender"],
                     "https://image.tmdb.org/t/p/original" . $actorData["profile_path"],
                     $actorData["name"]);
-                // $movie->addActor($actor); //A AJOUTER PLUS TARD
-                //rajoute l'acteur à la liste des acteurs
                 $actors[] = $actor;
             }
         }
         return $actors;
     }
 
-    //dans Movies/reviews
     public function getAvis(int $id): array
     {
         $opinions=[];
         $response = $this->tmbdClient->request(
             'GET',
-            '/3/movie/'.$id.'/reviews'
+            '/3/tv/'.$id.'/reviews'
         );
         $data = json_decode($response->getContent(), true);
 

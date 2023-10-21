@@ -4,26 +4,45 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping\Entity;
 use phpDocumentor\Reflection\Types\Boolean;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Actor {
-
     private ?int $id;
-    private ?string $firstname;
-    private ?string $lastname;
+    private ?string $name;
+    private ?string $urlPicture;
     private ?string $gender;
     private ?string $biography;
+    private ArrayCollection $movies;
 
-    /**
-     * @param int|null $id
-     * @param string|null $firstname
-     * @param string|null $lastname
-     * @param string|null $gender
-     * @param string|null $biography
-     */
-    public function __construct()
+    public function __construct($id, $gender, $urlPicture, $name)
     {
+        $this->id = $id;
+        $this->gender = $gender;
+        $this->name = $name;
+        $this->urlPicture = $urlPicture;
+        $this->movies = new ArrayCollection();
+    }
 
+    public function getUrlPicture(): ?string
+    {
+        return $this->urlPicture;
+    }
+
+    public function setUrlPicture(?string $urlPicture): Actor
+    {
+        $this->urlPicture = $urlPicture;
+        return $this;
+    }
+
+    public function getMovies(): ArrayCollection
+    {
+        return $this->movies;
+    }
+
+    public function setMovies(ArrayCollection $movies): Actor
+    {
+        $this->movies = $movies;
+        return $this;
     }
 
     public function getId(): ?int
@@ -36,24 +55,14 @@ class Actor {
         $this->id = $id;
     }
 
-    public function getFirstname(): ?string
+    public function getName(): ?string
     {
-        return $this->firstname;
+        return $this->name;
     }
 
-    public function setFirstname(?string $firstname): void
+    public function setName(?string $name): void
     {
-        $this->firstname = $firstname;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(?string $lastname): void
-    {
-        $this->lastname = $lastname;
+        $this->name = $name;
     }
 
     public function getGender(): ?string
@@ -75,6 +84,4 @@ class Actor {
     {
         $this->biography = $biography;
     }
-
-
 }

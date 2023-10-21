@@ -2,198 +2,160 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
+use phpDocumentor\Reflection\Types\Boolean;
 
 
 class Movie {
     private ?int $id;
     private ?string $title;
-    private ?string $image;
-    private ?string $video;
-    private ?string $overview;
-    private ?string $language;
+    private ?string $picturePath;
+    private ?bool $isVideo;
+    private ?string $originalLanguage;
     private ?bool $isAdult;
+    private ?DateTime $releaseDate;
+    private ?int $voteAverage;
+    private ?String $overview;
+    private ArrayCollection $actors;
 
-    /**
-     * @return int|null
-     */
+
+    public function __construct($id, $title, $picturePath, $isVideo, $overview, $originalLanguage, $isAdult, $releaseDate, $voteAverage)
+    {
+        $this->id = $id;
+        $this->title = $title;
+        $this->picturePath = $picturePath;
+        $this->isVideo = $isVideo;
+        $this->overview = $overview;
+        $this->originalLanguage = $originalLanguage;
+        $this->isAdult = $isAdult;
+        $this->releaseDate = $releaseDate;
+        $this->voteAverage = $voteAverage;
+        $this->actors = new ArrayCollection();
+    }
+
+    public function getActors(): ArrayCollection
+    {
+        return $this->actors;
+    }
+
+    public function setActors(ArrayCollection $actors): Movie
+    {
+        $this->actors = $actors;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     * @return Movie
-     */
     public function setId(?int $id): Movie
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string|null $title
-     * @return Movie
-     */
     public function setTitle(?string $title): Movie
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImage(): ?string
+    public function getPicturePath(): ?string
     {
-        return $this->image;
+        return $this->picturePath;
     }
 
-    /**
-     * @param string|null $image
-     * @return Movie
-     */
-    public function setImage(?string $image): Movie
+    public function setPicturePath(?string $picturePath): Movie
     {
-        $this->image = $image;
+        $this->picturePath = $picturePath;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getVideo(): ?string
+    public function getIsVideo(): ?bool
     {
-        return $this->video;
+        return $this->isVideo;
     }
 
-    /**
-     * @param string|null $video
-     * @return Movie
-     */
-    public function setVideo(?string $video): Movie
+    public function setIsVideo(?bool $isVideo): Movie
     {
-        $this->video = $video;
+        $this->isVideo = $isVideo;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getOverview(): ?string
+    public function getOriginalLanguage(): ?string
     {
-        return $this->overview;
+        return $this->originalLanguage;
     }
 
-    /**
-     * @param string|null $overview
-     * @return Movie
-     */
-    public function setOverview(?string $overview): Movie
+    public function setOriginalLanguage(?string $originalLanguage): Movie
     {
-        $this->overview = $overview;
+        $this->originalLanguage = $originalLanguage;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getLanguage(): ?string
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param string|null $language
-     * @return Movie
-     */
-    public function setLanguage(?string $language): Movie
-    {
-        $this->language = $language;
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
     public function getIsAdult(): ?bool
     {
         return $this->isAdult;
     }
 
-    /**
-     * @param bool|null $isAdult
-     * @return Movie
-     */
     public function setIsAdult(?bool $isAdult): Movie
     {
         $this->isAdult = $isAdult;
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
-    public function getRealeaseDate(): ?DateTime
+    public function getReleaseDate(): ?DateTime
     {
-        return $this->realeaseDate;
+        return $this->releaseDate;
     }
 
-    /**
-     * @param DateTime|null $realeaseDate
-     * @return Movie
-     */
-    public function setReleaseDate(?DateTime $realeaseDate): Movie
+    public function setReleaseDate(?DateTime $releaseDate): Movie
     {
-        $this->realeaseDate = $realeaseDate;
+        $this->releaseDate = $releaseDate;
         return $this;
     }
-    private ?DateTime $realeaseDate;
 
-    public function addActor(Actor $actor): static
+    public function getVoteAverage(): ?int
     {
-        if($this->actors->contains($actor)){
+        return $this->voteAverage;
+    }
+
+    public function setVoteAverage(?int $voteAverage): Movie
+    {
+        $this->voteAverage = $voteAverage;
+        return $this;
+    }
+
+    public function getOverview(): ?string
+    {
+        return $this->overview;
+    }
+
+    public function setOverview(?string $overview): Movie
+    {
+        $this->overview = $overview;
+        return $this;
+    }
+
+    public function addActor(Actor $actor):static{
+        if(!$this->actors->contains($actor)){
             $this->actors->add($actor);
-            $actor->setSerie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActor(Actor $actor): static
-    {
-        if($this->actor->removeElement($actor)){
-            if($actor->getSerie()===$this){
-                $actor->setSerie(null);
-            }
-
+            //$actor->addMovie($this);
         }
         return $this;
     }
 
-
-    /**
-     * @param int|null $id
-     * @param string|null $title
-     * @param string|null $image
-     * @param string|null $video
-     * @param string|null $language
-     * @param bool|null $isAdult
-     * @param DateTime|null $releaseDate
-     */
-    public function __construct(){
-
+    public function removeActor(Actor $actor):static{
+        if(!$this->actors->removeElement($actor)){
+            //$actor->removeMovie($this);
+        }
+        return $this;
     }
-
-
-
 }
