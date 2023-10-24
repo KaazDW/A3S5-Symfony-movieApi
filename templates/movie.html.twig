@@ -1,17 +1,34 @@
 {% extends 'base.html.twig' %}
 
+{#{% block body %}#}
+{#    <h1 class="text-center m-5 text-white">Liste des films : </h1>#}
+{#    <div class="row">#}
+{#        {% for movie in movies %}#}
+{#            <div class="col-md-4 mb-4">#}
+{#                <div class="card" style="height: 650px;">#}
+{#                    <img src="{{ movie.picturePath }}" class="card-img-top img-fluid img-thumbnail" alt="{{ movie.title }}" style="height: 50%;">#}
+{#                    <div class="card-body">#}
+{#                        <a class="text-decoration-none" href="{{ path('movie_details', {'id': movie.id }) }}">#}
+{#                            <h5 class="card-title text-center custom-title">{{ movie.title }}</h5>#}
+{#                        </a>#}
+{#                        <p class="card-text custom-justify text-ellipsis mx-auto">{{ movie.overview|slice(0, 350) }}{{ movie.overview|length > 150 ? '...' : '' }}</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#{% endblock %}#}
+
+
 {% block body %}
-    <h1 class="text-center m-5 text-white">Liste des films : </h1>
-    <div class="row">
+    <h1 class="my-5 text-white">Liste des films : </h1>
+    <div class="row row-cols-4 row-cols-md-5 g-4">
         {% for movie in movies %}
-            <div class="col-md-4 mb-4">
-                <div class="card" style="height: 650px;margin: 30px;">
-                    <img src="{{ movie.picturePath }}" class="card-img-top img-fluid img-thumbnail" alt="{{ movie.title }}" style="height: 50%;">
-                    <div class="card-body">
-                        <a class="text-decoration-none" href="{{ path('movie_details', {'id': movie.id }) }}">
-                            <h5 class="card-title text-center custom-title">{{ movie.title }}</h5>
-                        </a>
-                        <p class="card-text custom-justify text-ellipsis mx-auto">{{ movie.overview|slice(0, 350) }}{{ movie.overview|length > 150 ? '...' : '' }}</p>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ movie.picturePath }}" class="img-thumbnail object-fit-cover rounded-3" style="object-fit: cover" alt="...">
+                    <div class="card-body text-dark">
+                        <a href="{{ path('movie_details', {'id': movie.id }) }}" class="card-title btn w-100 h-100 d-flex align-items-center justify-content-center">{{ movie.title }}</a>
                     </div>
                 </div>
             </div>
@@ -19,20 +36,16 @@
     </div>
 {% endblock %}
 
+
+
+
 {% block stylesheets %}
     <style>
-        .custom-justify {
-            text-align: justify;
-            margin-top: 30px;
-            height: 190px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .btn{
+            transition: background-color .5s;
         }
-        .custom-title {
-            border-top: 2px solid #000;
-            border-bottom: 2px solid #000;
-            padding: 10px 0;
-            color: black;
+        .btn:hover{
+            background-color: #e8e8e8;
         }
     </style>
 {% endblock %}
