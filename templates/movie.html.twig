@@ -22,11 +22,11 @@
 
 {% block body %}
     <h1 class="my-5 text-white">Liste des films : </h1>
-    <div class="row row-cols-4 row-cols-md-5 g-4">
+    <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
         {% for movie in movies %}
             <div class="col">
                 <div class="card h-100">
-                    <img src="{{ movie.picturePath }}" class="img-thumbnail object-fit-cover rounded-3" style="object-fit: cover" alt="...">
+                    <img src="{{ movie.picturePath }}" class="img-thumbnail object-fit-cover rounded-3" loading="lazy" style="object-fit: cover" alt="...">
                     <div class="card-body text-dark">
                         <a href="{{ path('movie_details', {'id': movie.id }) }}" class="card-title btn w-100 h-100 d-flex align-items-center justify-content-center">{{ movie.title }}</a>
                     </div>
@@ -35,9 +35,6 @@
         {% endfor %}
     </div>
 {% endblock %}
-
-
-
 
 {% block stylesheets %}
     <style>

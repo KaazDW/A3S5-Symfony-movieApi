@@ -20,30 +20,16 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/movie')]
-class MovieController extends AbstractController{
-
-    public function __construct( private  HttpClientInterface $tmbdClient){
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ClientExceptionInterface
-     */
-    #[Route('/all')]
-    public function getAllMovies(): Response
+class MovieController extends AbstractController
+{
+    public function __construct(private HttpClientInterface $tmbdClient)
     {
-        $response = $this->tmbdClient->request(
-            'GET',
-            '/3/movie/popular?language=fr-FR&page=1'
-        );
-        return new Response($response->getContent());
     }
-    #[Route('/popular','popularFilm')]
+
+    #[Route('/', 'Movie')] // Route /movie
     public function getMovies(Request $request): Response
     {
-        $movies=[];//tableau des films
+        $movies = []; // tableau des films
         $response = $this->tmbdClient->request(
             'GET',
             '/3/movie/popular?language=fr-FR&page=1'
@@ -67,9 +53,26 @@ class MovieController extends AbstractController{
                 }
             }
         }
+
         return $this->render('movie.html.twig', [
             'movies' => $movies
         ]);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    #[Route('/all')]
+    public function getAllMovies(): Response
+    {
+        $response = $this->tmbdClient->request(
+            'GET',
+            '/3/movie/popular?language=fr-FR&page=1'
+        );
+        return new Response($response->getContent());
     }
 
     /**
