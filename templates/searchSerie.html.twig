@@ -1,24 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Résultats de la recherche pour "{{ searchTerm }}"</h1>
+    <h1 class="my-5 text-white">Résultats de la recherche pour "{{ searchTerm }}"</h1>
 
     {% if searchResults.results > 0 %}
         <ul>
             {% for serie in searchResults.results %}
-                <li>
-                    <h2>{{ serie.name }}</h2>
-                    <p>Date de sortie : {{ serie.first_air_date|date('d/m/Y') }}</p>
-                    <p>Langue : {{ serie.original_language }}</p>
-                    <p>Vote moyen : {{ serie.vote_average }}</p>
-                    <p>{{ serie.overview }}</p>
-                    <img src="https://image.tmdb.org/t/p/original{{ serie.poster_path }}" alt="{{ serie.name }}" width="200">
+                <li class="d-flex align-items-center text-center w-100 justify-content-between my-3 p-3" style="border-radius: 20px; border: 1px solid grey">
+                    <h2 class="w-25 mx-2">{{ serie.name }}</h2>
+                    <div class="w-25 mx-2">
+                        <p>Date de sortie : {{ serie.first_air_date|date('d/m/Y') }}</p>
+                        <p>Langue : {{ serie.original_language }}</p>
+                        <p>Vote moyen : {{ serie.vote_average }}</p>
+                    </div>
+                    <p class="w-25 mx-2">{{ serie.overview }}</p>
+                    <img  class="w-25" style="border-radius: 20px;" loading="lazy" src="https://image.tmdb.org/t/p/original{{ serie.poster_path }}" alt="affiche de ' {{ serie.name }} ' non trouvé" width="200">
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>Aucun résultat trouvé pour "{{ searchTerm }}".</p>
+        <h4>Aucun résultat trouvé pour la recherche : "{{ searchTerm }}".</h4>
     {% endif %}
+    <div class="text-center pt-5">
+        <a class="btn btn-outline-light mb-5" href="{{ path('Home')}}">Retourner à l'Accueil</a>
+    </div>
 
-    <a href="{{ path('popularFilm') }}">Retour à la page d'accueil</a>
 {% endblock %}

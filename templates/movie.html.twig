@@ -1,27 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{#{% block body %}#}
-{#    <h1 class="text-center m-5 text-white">Liste des films : </h1>#}
-{#    <div class="row">#}
-{#        {% for movie in movies %}#}
-{#            <div class="col-md-4 mb-4">#}
-{#                <div class="card" style="height: 650px;">#}
-{#                    <img src="{{ movie.picturePath }}" class="card-img-top img-fluid img-thumbnail" alt="{{ movie.title }}" style="height: 50%;">#}
-{#                    <div class="card-body">#}
-{#                        <a class="text-decoration-none" href="{{ path('movie_details', {'id': movie.id }) }}">#}
-{#                            <h5 class="card-title text-center custom-title">{{ movie.title }}</h5>#}
-{#                        </a>#}
-{#                        <p class="card-text custom-justify text-ellipsis mx-auto">{{ movie.overview|slice(0, 350) }}{{ movie.overview|length > 150 ? '...' : '' }}</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#{% endblock %}#}
-
-
 {% block body %}
-    <h1 class="my-5 text-white">Liste des films : </h1>
+    <h1 class="my-5 text-white">Liste des Films : </h1>
     <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
         {% for movie in movies %}
             <div class="col">

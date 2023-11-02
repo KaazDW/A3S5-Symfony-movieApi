@@ -61,9 +61,9 @@
                 </ul>
                 <form class="search-form form-inline" action="{{ path('searchMedia') }}" method="get">
                     <input class="form-control me-2 search-input p-2" type="search" name="query" placeholder="Recherche" aria-label="Recherche">
-                    <select class=" search-select me-2 p-2" name="media">
-                        <option value="movie">Films</option>
-                        <option value="tv">Séries</option>
+                    <select class="btn btn-outline-light search-select me-2 p-2" name="media">
+                        <option class="text-dark" value="movie">Films</option>
+                        <option class="text-dark" value="tv">Séries</option>
                     </select>
                     <button class="btn btn-outline-success p-2" type="submit">Rechercher</button>
                 </form>
