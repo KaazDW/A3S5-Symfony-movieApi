@@ -23,7 +23,7 @@
 {#                        <p class="card-text custom-justify text-ellipsis mx-auto">{{ movie.overview|slice(0, 350) }}{{ movie.overview|length > 150 ? '...' : '' }}</p>#}
 
 {% block body %}
-    <h1 class="my-5 text-white">Liste des Series : </h1>
+    <h1 class="my-5 text-white">Series populaires en ce moment : </h1>
     <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
         {% for serie in series %}
             <div class="col">
