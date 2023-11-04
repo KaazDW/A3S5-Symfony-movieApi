@@ -6,7 +6,7 @@
             <div class="col-md-4">
                 <img src="{{ movie.picturePath }}" class="card-img-top img-fluid img-thumbnail" alt="{{ movie.title }}">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 scroller" style="height: 85vh; overflow-y: scroll">
                 <div class="card-body">
                     <h3 class="">{{ movie.title }}</h5>
                     <p class="resume">
@@ -52,12 +52,46 @@
                         <div class="d-flex overflow-scroll scroller">
                             {% for actor in actors %}
                             <div class="mx-1 overflow-y: scroll;"> 
-                                <img src="{{ actor.urlPicture }}" class="" style="border-radius: 10px; object-fit: cover; height: 150px; width: 100px;" alt="photo de l'acteur non trouvé">
+                                <img src="{{ actor.urlPicture }}" class="" style="border-radius: 10px; object-fit: cover; height: 150px; width: 100px;" alt="photo de l'acteur non trouvé :">
                                 {{ actor.name }}
                             </div>
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="pt-3 mt-4" style="border-top: 1px solid white;">
+                        <h5 class="fw-bold">Avis :</h5>
+                        {% if avis is not empty %}
+                            <h2>Vous avez laissé un avis :</h2>
+                            <ul>
+                                {% for avi in avis %}
+                                    <li>{{ avi.username }} a noté {{ avi.rates }}/10 : {{ avi.description }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p>Vous n'avez encore communiqué aucun avis sur ce Film.</p>
+                                <a class="text-decoration-none btn btn-outline-light" href="{{ path('ajouter_avis_film', {'id': movie.id}) }}">
+                                    Ajouter un avis
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="pt-3 mt-4" style="border-top: 1px solid white;">
+                        {% if opinions is not empty %}
+                            <ul class="list-unstyled">
+                                {% for opinion in opinions %}
+                                    <li class="w-100 p-3">
+                                        <img src="{{ opinion.avatarPath }}" class="mx-3" style="border-radius: 50px; object-fit: cover; height: 50px; width: 50px;" alt="photo de profil utilisateur non trouvé">
+                                        <b>{{ opinion.username }}</b> - {% if opinion.rating is not empty %}{{ opinion.rating }}{% else %} NR (Non-Renseigné) {% endif %}/10 </br><br>
+                                        {{ opinion.content }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucun opinion trouvé.</p>
+                        {% endif %}
+                    </div>
+<!-- 
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Avis</button>
@@ -76,7 +110,7 @@
                                     {% endfor %}
                                 </ul>
                             {% else %}
-                                <p>Aucun opinion trouvé.</p>
+                                <p>Aucun opinion partagé sur ce Film.</p>
                             {% endif %}
                         </div>
                         <div class="tab-pane fade" id="nav-addAvis" role="tabpanel" aria-labelledby="nav-addAvis-tab" tabindex="0">
@@ -98,8 +132,7 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -111,29 +144,8 @@
         .scroller::-webkit-scrollbar{
             display: none;
         }
-        .avatar_actor{
-            height: 90px;
-            width: 90px;
-        }
-        .custom-title {
-            border-top: 2px solid #000; /* Ligne au-dessus du titre */
-            border-bottom: 2px solid #000; /* Ligne en dessous du titre */
-            padding: 10px 0;
-            font-size: 1.5rem; /* Taille de police du titre */
-        }
-
         .resume{
             text-align: justify;
-        }
-        .customFavs{
-            margin-bottom: 20px;
-            margin-left: 150px;
-        }
-        .position{
-            margin-top: 30px;
-        }
-        .pos{
-            margin-top: 30px;
         }
 
     </style>
