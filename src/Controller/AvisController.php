@@ -39,7 +39,7 @@ class AvisController extends AbstractController
             return $this->redirectToRoute('serie_details', ['id' => $id]);
         }
 
-        return $this->render('ajouter.html.twig', [
+        return $this->render('add_avis.html.twig', [
             'form' => $form,
         ]);
     }
@@ -62,7 +62,7 @@ class AvisController extends AbstractController
 
             return $this->redirectToRoute('movie_details', ['id' => $id]);
         }
-        return $this->render('ajouter.html.twig', [
+        return $this->render('add_avis.html.twig', [
             'form' => $form,
         ]);
     }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5 w-25 mx-auto">
+        <h2>Ajouter un avis</h2>
+        <div class="text-center">
+            {{ form_start(form) }}
+            <!-- {{ form_row(form.idMovie) }} -->
+            <!-- {{ form_row(form.idSerie) }} -->
+            {{ form_row(form.username) }}
+            {{ form_row(form.rates) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.date) }}
+            <button type="submit" class="btn btn-outline-light mt-3">Ajouter l'avis</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+  
+</style>
+{% endblock %}

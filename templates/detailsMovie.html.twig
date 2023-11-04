@@ -91,48 +91,6 @@
                             <p>Aucun opinion trouvé.</p>
                         {% endif %}
                     </div>
-<!-- 
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Avis</button>
-                            <button class="nav-link" id="nav-addAvis-tab" data-bs-toggle="tab" data-bs-target="#nav-addAvis" type="button" role="tab" aria-controls="nav-addAvis" aria-selected="false">Mes avis</button>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                            {% if opinions is not empty %}
-                                <ul>
-                                    {% for opinion in opinions %}
-                                        <li>
-                                            <img src="{{ opinion.avatarPath }}" class="card-img-top img-fluid img-thumbnail avatar_avis" alt="image avatar utilisateur">
-                                        - {{ opinion.username }} - {{ opinion.rating }}/10 :<br></br>{{ opinion.content }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <p>Aucun opinion partagé sur ce Film.</p>
-                            {% endif %}
-                        </div>
-                        <div class="tab-pane fade" id="nav-addAvis" role="tabpanel" aria-labelledby="nav-addAvis-tab" tabindex="0">
-                            {% if avis is not empty %}
-                                <h2>Avis existants :</h2>
-                                <ul>
-                                    {% for avi in avis %}
-                                        <li>
-                                            {{ avi.username }} a noté {{ avi.rates }}/10 : {{ avi.description }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <p>Aucun avis ajouté.</p>
-                            {% endif %}
-                            <div>
-                                <a class="text-decoration-none" href="{{ path('ajouter_avis_film', {'id': movie.id}) }}">
-                                    <h5 class="card-title text-center custom-title">Ajouter un avis</h5>
-                                </a>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
