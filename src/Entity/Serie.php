@@ -26,7 +26,6 @@ class Serie {
         private Collection $actors;
         private Collection $opinion;
 
-
     /**
      * @param int|null $id
      * @param string|null $name

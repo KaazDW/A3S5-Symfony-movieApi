@@ -11,7 +11,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/fav')]
 class FavorisController extends AbstractController{
-
     public function __construct( private  HttpClientInterface $tmbdClient){
     }
 
@@ -23,7 +22,7 @@ class FavorisController extends AbstractController{
 
         return $this->render('favoris.html.twig',[
             'favoris' => $favoris,
-            'confirmationMessage' => 'test',
+            'confirmationMessage' => 'default_confirm_msg',
         ]);
     }
 
@@ -34,7 +33,7 @@ class FavorisController extends AbstractController{
 
         if ($existingFavorite) {
             return $this->render('confirmation.html.twig', [
-                'confirmationMessage' => 'Le film avec l\'ID ' . $id . ' est déjà dans vos favoris !',
+                'confirmationMessage' => 'Le film est déjà dans vos favoris !',
             ]);
         }
         else{
@@ -50,6 +49,7 @@ class FavorisController extends AbstractController{
 
                 $favorite = new Favorite();
                 $favorite->setIdMovie($id);
+                $favorite->setName($title);
 
                 $entityManager->persist($favorite);
                 $entityManager->flush();
@@ -77,7 +77,7 @@ class FavorisController extends AbstractController{
 
         if ($existingFavorite) {
             return $this->render('confirmation.html.twig', [
-                'confirmationMessage' => 'La série avec l\'ID ' . $id . ' est déjà dans vos favoris !',
+                'confirmationMessage' => 'La série est déjà dans vos favoris !',
             ]);
         }
         else{

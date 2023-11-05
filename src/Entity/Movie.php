@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 use phpDocumentor\Reflection\Types\Boolean;
 
-
 class Movie {
     private ?int $id;
     private ?string $title;
@@ -18,7 +17,6 @@ class Movie {
     private ?int $voteAverage;
     private ?String $overview;
     private ArrayCollection $actors;
-
 
     public function __construct($id, $title, $picturePath, $isVideo, $overview, $originalLanguage, $isAdult, $releaseDate, $voteAverage)
     {
