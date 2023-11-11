@@ -34,7 +34,7 @@ class MovieController extends AbstractController
             'GET',
             '/3/movie/popular?language=fr-FR&page=1'
         );
-
+0
         if ($request->query->has('q')) {
             $query = $request->query->get('q');
             $movies = $this->searchMovies($query);

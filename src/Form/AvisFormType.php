@@ -14,8 +14,8 @@ class AvisFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('idMovie', TextType::class)
-            ->add('idSerie', TextType::class)
+            ->add('idMovie')
+            ->add('idSerie')
             ->add('username', TextType::class, [
                 'attr' => [
                     'style' => 'width: 100px; margin: 0 25px;',
