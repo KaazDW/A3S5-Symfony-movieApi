@@ -17,7 +17,7 @@ class Favorite
     private ?int $idMovie = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $name = null;
+    private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $idSerie = null;
@@ -38,12 +38,12 @@ class Favorite
         return $this;
     }
 
-    public function getName(): ?int
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?int $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
         return $this;
