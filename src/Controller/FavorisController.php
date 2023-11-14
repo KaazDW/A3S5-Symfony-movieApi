@@ -93,6 +93,7 @@ class FavorisController extends AbstractController{
 
                 $favorite = new Favorite();
                 $favorite->setIdSerie($id);
+                $favorite->setName($title);
 
                 $entityManager->persist($favorite);
                 $entityManager->flush();

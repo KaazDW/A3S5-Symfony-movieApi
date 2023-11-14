@@ -5,14 +5,14 @@
     <div class="container">
         {% for favori in favoris %}
             <div style="display: flex; align-items: center;">
-                <p>{{ favori.id }}; </p>
+                <!-- <p>{{ favori.id }}; </p> -->
                 
                 {% if favori.idSerie is empty %}
-                    <p>| type: Movie;</p>
+                    <p>Movie : </p>
                 {% elseif favori.idMovie is empty %}
-                    <p>| type: Serie; </p>
+                    <p>Serie : </p>
                 {% endif %}
-                <p>| name : {{ favori.name }} </p>
+                <p> {{ favori.name }} </p>
             </div>
         {% endfor %}
     </div>
